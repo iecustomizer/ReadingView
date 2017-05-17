@@ -1,0 +1,108 @@
+<script type="text/javascript">
+// Toggle the appended stylesheet for an showing the Design view background grid and outlined controls.
+var win=external.menuArguments;
+var doc=win.document;
+//var sdomain=win.domain;
+//var sURL=win.location;
+//var sIECSheetURL='http://www.iecustomizer.com/stylesheets/DesignMode.css';
+var sCSS='html,body{height:100%;margin:0;background-color:white!important;color:black;background-image:none;}';
+sCSS+='body::before{content:\'reading view\'}';
+sCSS+='aside,div.aside{display:none}';
+sCSS+='header,div.header,div.head{display:none}';
+sCSS+='footer,div.footer{display:none}';
+
+sCSS+='#main,main,div.main{display:block;width:80%!important;margin:10px 10%!important;height:100%;color:black;background-color:white;padding:0;}';
+sCSS+='@media print{';
+sCSS+='#main,main,div.main{display:block;width:100%;margin:10px;height:100%;}';  
+sCSS+='}';
+sCSS+='nav[role=navigation]{display:none;}';
+sCSS+='div[role=menubar]{display:none;}';
+
+
+/* bing Reading View*/
+sCSS+='#b_content{padding:0}';
+sCSS+='#b_header{display:block;background-color:white;color:black}';
+sCSS+='#b_results{display:block;width:100%;background-color:white;color:black}';
+sCSS+='#b_results li{display:block;float:initial;}';
+sCSS+='#b_results li.b_ad{display:none}';
+sCSS+='#b_results li nav{display:block;}';
+sCSS+='nav ul li{float:left}';
+sCSS+='#b_tween{display:none}';
+sCSS+='#b_context{display:block}';
+sCSS+='#b_context li{float:left}';
+
+/* wikipedia reading view */
+
+sCSS+='#mw-panel,#mw-head,#mw-head-base,#mw-page-base,#siteNotice{';
+sCSS+='display:none;visibility:hidden}';
+sCSS+='#content{width:80%;border:none!important;margin:0px auto!important;}';
+sCSS+='@media print{';
+sCSS+='#content{width:100%;}';
+sCSS+='}';
+
+sCSS+='div.suggestions, table.metadata{display:none;visibility:hidden}';
+sCSS+='#mw-body-content{border:none}';
+sCSS+='#toc.toc{display:none!important;visibility:hidden}';
+sCSS+='hr{display:none}';
+sCSS+='h1,h2,h3,h4,h5{border:none;outline:none}';
+sCSS+='img, table.infobox, table.vertical-navbox, div.thumbinner, div.planlinks{border:none!important;}';
+
+/*msn reading view */
+sCSS+='#precontent{display:none}';
+sCSS+='section.articlebody, #main, main, div.main {width:100%}';
+sCSS+='#content{width:80%}';
+sCSS+='#maincontent{margin:10px;box-sizing: border-box;}{}';
+/* msdn */
+sCSS+='#sidebar,#menu-nav{display:none}';
+        
+/* blogger */
+sCSS+='div.main-inner{max-width:100%}';
+/* twitter */
+sCSS+='div.dashboard{display:none}';
+sCSS+='div.content-main{width:100%}';
+function ToggleSSR(e)
+{
+//  var doc         = window._content.document;
+  var docRoot     = doc.documentElement;
+  var docRootName = docRoot.nodeName.toLowerCase();
+  var styleSheets = doc.styleSheets;
+  var lastOwnerNode = null;
+  for (var i = 0; i < styleSheets.length; ++i) {
+    var currentStyleSheet = styleSheets[i];
+    if (currentStyleSheet.title == 'Reading View'||currentStyleSheet.id=='readingview') {
+      currentStyleSheet.disabled = !currentStyleSheet.disabled;
+      return;
+    }
+    if (currentStyleSheet.ownerNode)
+      lastOwnerNode = currentStyleSheet.ownerNode;
+  }
+
+  // we have to attach the stylesheet to the document...
+  // what's the document root ? html ?
+  if (docRootName == "html") {
+    // let's create a link element
+    var headElement = doc.getElementsByTagName('head')[0];
+    var styleElement = doc.createElement('style');
+    styleElement.setAttribute('title', 'Reading View');
+    styleElement.setAttribute('id','readingview');
+    styleElement.setAttribute('type', 'text/css');
+    styleElement.innerHTML=sCSS;
+
+    headElement.appendChild(styleElement);
+    styleElement.disabled=false;
+  }
+}
+try
+{
+ToggleSSR();
+
+}
+catch(e)
+{
+alert(e.message);
+}
+finally
+{
+
+}
+</script>
